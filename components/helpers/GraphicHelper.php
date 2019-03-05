@@ -9,7 +9,8 @@ use jonmer09\dashboard\models\Graphic;
  *
  * @author Jonmer Carpio <jonmer09@gmail.com>
  */
-class GraphicHelper {
+class GraphicHelper
+{
 
     public static $list = [
         //'AnnotationChart' => 'annotationchart',
@@ -54,11 +55,19 @@ class GraphicHelper {
         'WordTree' => 'wordtree',
     ];
 
-    public static function getVisualitationData(Graphic $model) {
-        $validate = function($v) {
+    public static function getVisualitationData(Graphic $model)
+    {
+        $validate = function ($v) {
             return is_numeric($v) ? $v + 0 : $v;
         };
         $_d = \Yii::$app->db->createCommand($model->source)->queryAll();
+        if (empty($_d)) {
+            return [
+                [
+                    'Empty',
+                ]                
+            ];
+        }
         $_keys = array_keys($_d[0]);
         $__d[] = $_keys;
         foreach ($_d as $d) {
@@ -70,5 +79,4 @@ class GraphicHelper {
         }
         return $__d;
     }
-
 }
